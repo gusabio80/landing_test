@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piloto Gratis — Fassilita para Peluquerías</title>
+  <style>
+    :root {
+      --bg-deep:     #07080d;
+      --bg-card:     #0d1117;
+      --bg-card2:    #111827;
+      --blue-laser:  #00d4ff;
+      --blue-mid:    #0080ff;
+      --blue-dark:   #0050cc;
+      --white:       #f0f6ff;
+      --gray-light:  #8b9ab0;
+      --gray-dark:   #1e2d40;
+      --success:     #00ffaa;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--white);
+      font-family: var(--font);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── UTILS ─────────────────────────────────────────── */
+    .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+    .highlight { color: var(--blue-laser); }
+    .tag {
+      display: inline-block;
+      background: rgba(0, 212, 255, 0.1);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: var(--blue-laser);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    nav {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      position: sticky;
+      top: 0;
+      background: rgba(7, 8, 13, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+    .nav-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, var(--blue-laser), var(--blue-mid));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-cta {
+      background: var(--blue-laser);
+      color: var(--bg-deep);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse at center, rgba(0, 128, 255, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--gray-light);
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--blue-mid), var(--blue-laser));
+      color: var(--bg-deep);
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 16px 36px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(0, 212, 255, 0.3);
+    }
+    .hero-cta::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.2), transparent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hero-cta:hover::before {
+      width: 300px;
+      height: 300px;
+      animation: glow-pulse 0.6s ease-out;
+    }
+    @keyframes glow-pulse {
+      0% { width: 0; height: 0; opacity: 1; }
+      100% { width: 300px; height: 300px; opacity: 0; }
+    }
+    .hero-note {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: var(--gray-light);
+    }
+
+    /* ─── PAIN ───────────────────────────────────────────── */
+    .pain { padding: 70px 0; }
+    .pain h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .pain .subtitle {
+      color: var(--gray-light);
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+    .pain-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .pain-item {
+      background: var(--bg-card);
+      border: 1px solid var(--gray-dark);
+      border-left: 3px solid rgba(255, 80, 80, 0.5);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 0.95rem;
+      color: var(--gray-light);
+    }
+    .pain-item strong { color: var(--white); }
+
+    /* ─── SOLUTION ───────────────────────────────────────── */
+    .solution { padding: 70px 0; }
+    .solution h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .solution .subtitle {
+      color: var(--gray-light);
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+    .sol-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .sol-item {
+      background: var(--bg-card);
+      border: 1px solid var(--gray-dark);
+      border-left: 3px solid var(--blue-laser);
+      border-radius: 8px;
+      padding: 18px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .sol-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .sol-text h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--white);
+    }
+    .sol-text p {
+      font-size: 0.85rem;
+      color: var(--gray-light);
+    }
+
+    /* ─── DEMO CHAT ──────────────────────────────────────── */
+    .demo { padding: 70px 0; }
+    .demo h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .demo .subtitle {
+      color: var(--gray-light);
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+    .chat-window {
+      background: var(--bg-card);
+      border: 1px solid var(--gray-dark);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .chat-header {
+      background: var(--bg-card2);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--gray-dark);
+    }
+    .chat-avatar {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--blue-mid), var(--blue-laser));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .chat-name { font-size: 0.9rem; font-weight: 600; }
+    .chat-status { font-size: 0.75rem; color: var(--success); }
+    .chat-body { padding: 20px 18px; display: flex; flex-direction: column; gap: 12px; }
+    .msg {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+    .msg.bot {
+      background: var(--bg-card2);
+      border: 1px solid var(--gray-dark);
+      align-self: flex-start;
+      border-bottom-left-radius: 3px;
+      animation: slide-in-left 0.3s ease-out;
+    }
+    .msg.user {
+      background: linear-gradient(135deg, rgba(0, 128, 255, 0.25), rgba(0, 212, 255, 0.15));
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      align-self: flex-end;
+      border-bottom-right-radius: 3px;
+      color: var(--white);
+      animation: slide-in-right 0.3s ease-out;
+    }
+    @keyframes slide-in-left {
+      from { opacity: 0; transform: translateX(-15px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slide-in-right {
+      from { opacity: 0; transform: translateX(15px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .msg-time { font-size: 0.7rem; color: var(--gray-light); margin-top: 4px; }
+
+    /* ─── PILOT STEPS ────────────────────────────────────── */
+    .pilot { padding: 70px 0; }
+    .pilot h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .pilot .subtitle {
+      color: var(--gray-light);
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex;
+      gap: 20px;
+      position: relative;
+    }
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 44px;
+      bottom: -20px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--blue-laser), transparent);
+    }
+    .step-num {
+      width: 40px; height: 40px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-mid));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--white);
+      box-shadow: 0 0 15px rgba(0, 128, 255, 0.3);
+      margin-top: 2px;
+    }
+    .step-content {
+      padding-bottom: 32px;
+      flex: 1;
+    }
+    .step-content h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .step-content p {
+      font-size: 0.88rem;
+      color: var(--gray-light);
+    }
+    .step-badge {
+      display: inline-block;
+      background: rgba(0, 255, 170, 0.1);
+      border: 1px solid rgba(0, 255, 170, 0.3);
+      color: var(--success);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+
+    /* ─── SERVICES ───────────────────────────────────────── */
+    .services { padding: 70px 0; }
+    .services h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .services .subtitle {
+      color: var(--gray-light);
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .service-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--gray-dark);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      text-align: center;
+      color: var(--gray-light);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .service-chip:hover {
+      border-color: var(--blue-laser);
+      color: var(--white);
+    }
+    .service-chip span { display: block; font-size: 1.3rem; margin-bottom: 4px; }
+
+    /* ─── SCHEDULE ───────────────────────────────────────── */
+    .schedule { padding: 30px 0 70px; }
+    .schedule-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .schedule-row {
+      background: var(--bg-card);
+      border: 1px solid var(--gray-dark);
+      border-radius: 8px;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+    .schedule-day { font-weight: 600; }
+    .schedule-time { color: var(--blue-laser); font-size: 0.85rem; }
+
+    /* ─── FORM ───────────────────────────────────────────── */
+    .cta-section {
+      padding: 70px 0;
+      text-align: center;
+      position: relative;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 200px;
+      background: radial-gradient(ellipse, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .cta-section .subtitle {
+      color: var(--gray-light);
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 12px;
+      padding: 32px 28px;
+      text-align: left;
+      box-shadow: 0 0 40px rgba(0, 212, 255, 0.05);
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--gray-light);
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      background: var(--bg-deep);
+      border: 1px solid var(--gray-dark);
+      border-radius: 7px;
+      color: var(--white);
+      font-size: 0.95rem;
+      padding: 12px 14px;
+      font-family: var(--font);
+      transition: border-color 0.2s;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: var(--blue-laser);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+    }
+    .form-group select option { background: var(--bg-card); }
+    .form-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--blue-mid), var(--blue-laser));
+      color: var(--bg-deep);
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.25);
+      transition: all 0.3s ease;
+      margin-top: 4px;
+      position: relative;
+    }
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(0, 212, 255, 0.55), 0 0 70px rgba(0, 212, 255, 0.25);
+    }
+    .form-submit::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.15), transparent);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .form-submit:hover::before {
+      width: 250px;
+      height: 250px;
+      animation: glow-pulse 0.6s ease-out;
+    }
+    .form-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--gray-light);
+      margin-top: 12px;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 24px;
+    }
+    .form-success h3 { color: var(--success); font-size: 1.2rem; margin-bottom: 8px; }
+    .form-success p { color: var(--gray-light); font-size: 0.9rem; }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      padding: 30px 0;
+      border-top: 1px solid var(--gray-dark);
+      text-align: center;
+    }
+    footer p { font-size: 0.8rem; color: var(--gray-light); }
+    footer a { color: var(--blue-laser); text-decoration: none; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .hero { padding: 60px 0 50px; }
+      .hero h1 { font-size: 1.7rem; }
+      .hero-cta { padding: 14px 28px; font-size: 0.95rem; }
+      .form-card { padding: 24px 18px; }
+      .services-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Fassilita</div>
+    <a href="#piloto" class="nav-cta">Quiero el piloto gratis</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="tag">Piloto gratuito — 1 mes sin costo</div>
+    <h1>Tu peluquería agenda citas sola.<br><span class="highlight">24/7, sin que tú respondas.</span></h1>
+    <p>Un asistente inteligente en WhatsApp responde preguntas, sugiere horarios y confirma citas automáticamente — mientras tú trabajas.</p>
+
+    <!-- Ilustración Hero SVG -->
+    <svg width="320" height="240" viewBox="0 0 320 240" style="margin: 40px auto; max-width: 100%; filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.15));">
+      <!-- Teléfono -->
+      <rect x="30" y="40" width="100" height="160" rx="12" fill="none" stroke="url(#grad1)" stroke-width="3"/>
+      <rect x="35" y="50" width="90" height="130" fill="#0d1117" rx="8"/>
+
+      <!-- Pantalla del teléfono -->
+      <circle cx="80" cy="80" r="8" fill="#00d4ff"/>
+      <text x="80" y="100" font-size="10" fill="#00d4ff" text-anchor="middle" font-weight="bold">✓ Cita confirmada</text>
+      <text x="80" y="115" font-size="9" fill="#8b9ab0" text-anchor="middle">Viernes 3:30pm</text>
+
+      <!-- Chat bubble entrada -->
+      <rect x="40" y="130" width="60" height="30" rx="6" fill="rgba(0, 128, 255, 0.3)" stroke="#0080ff" stroke-width="1"/>
+      <text x="70" y="150" font-size="8" fill="#00d4ff" text-anchor="middle">Quiero agendar</text>
+
+      <!-- Asistente IA (lado derecho) -->
+      <circle cx="220" cy="100" r="35" fill="none" stroke="url(#grad1)" stroke-width="2"/>
+      <circle cx="220" cy="100" r="30" fill="#0d1117"/>
+      <circle cx="210" cy="95" r="5" fill="#00d4ff"/>
+      <circle cx="230" cy="95" r="5" fill="#00d4ff"/>
+      <path d="M 210 110 Q 220 115 230 110" stroke="#00d4ff" stroke-width="1.5" fill="none"/>
+      <text x="220" y="130" font-size="11" fill="#8b9ab0" text-anchor="middle" font-weight="bold">Bot IA</text>
+
+      <!-- Línea de conexión -->
+      <line x1="130" y1="85" x2="185" y2="100" stroke="rgba(0, 212, 255, 0.3)" stroke-width="2" stroke-dasharray="5,5"/>
+
+      <!-- Gradientes -->
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#0080ff;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#00d4ff;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <a href="#piloto" class="hero-cta">Quiero probarlo gratis</a>
+    <p class="hero-note">Sin contratos. Sin letra pequeña. Solo resultados.</p>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="pain">
+  <div class="container">
+    <div class="tag">El problema</div>
+    <h2>¿Cuánto tiempo pierdes<br>respondiendo mensajes?</h2>
+    <p class="subtitle">Esto pasa en todas las peluquerías, todos los días.</p>
+    <div class="pain-list">
+      <div class="pain-item"><strong>50+ mensajes diarios</strong> preguntando precios, horarios y disponibilidad — la mayoría son las mismas preguntas.</div>
+      <div class="pain-item"><strong>Citas dobles o perdidas</strong> porque la agenda está en varios lados: WhatsApp, papel, memoria.</div>
+      <div class="pain-item"><strong>Clientes que se van</strong> porque nadie respondió a tiempo. Cada mensaje sin respuesta es dinero que se va.</div>
+      <div class="pain-item"><strong>3-4 horas al día</strong> que podrías invertir en lo que sabes hacer, no en responder el teléfono.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="solution">
+  <div class="container">
+    <div class="tag">La solución</div>
+    <h2>Un asistente que trabaja<br><span class="highlight">mientras tú cortas.</span></h2>
+    <p class="subtitle">Sin apps nuevas. Sin capacitación. Funciona en el WhatsApp que ya tienes.</p>
+    <div class="sol-grid">
+      <div class="sol-item">
+        <div class="sol-icon">💬</div>
+        <div class="sol-text">
+          <h4>Responde automáticamente</h4>
+          <p>Preguntas de precios, servicios, horarios y disponibilidad — respondidas al instante, las 24 horas.</p>
+        </div>
+      </div>
+      <div class="sol-item">
+        <div class="sol-icon">📅</div>
+        <div class="sol-text">
+          <h4>Agenda sin errores</h4>
+          <p>El cliente elige horario, el sistema confirma y guarda en tu calendario. Sin dobles citas, sin olvidos.</p>
+        </div>
+      </div>
+      <div class="sol-item">
+        <div class="sol-icon">👤</div>
+        <div class="sol-text">
+          <h4>Recuerda a cada cliente</h4>
+          <p>Historial de visitas, preferencias, qué servicio tuvo antes. Tu negocio aprende con cada cita.</p>
+        </div>
+      </div>
+      <div class="sol-item">
+        <div class="sol-icon">📊</div>
+        <div class="sol-text">
+          <h4>Ves todo en un lugar</h4>
+          <p>Cuántas citas, qué servicios más pedidos, horas pico. Datos reales para tomar mejores decisiones.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO CHAT -->
+<section class="demo">
+  <div class="container">
+    <div class="tag">Así funciona</div>
+    <h2>Una conversación real<br>con el asistente</h2>
+    <p class="subtitle">Esto es lo que ve tu cliente en WhatsApp.</p>
+    <div class="chat-window">
+      <div class="chat-header">
+        <div class="chat-avatar">✂</div>
+        <div>
+          <div class="chat-name">D'Arthur Peluquería</div>
+          <div class="chat-status">● En línea</div>
+        </div>
+      </div>
+      <div class="chat-body">
+        <div class="msg user">Hola, ¿cuánto vale un tinte completo?</div>
+        <div class="msg bot">¡Hola! El tinte completo tiene un valor que varía según la longitud del cabello. ¿Es cabello corto, medio o largo? Así te doy el precio exacto 😊</div>
+        <div class="msg user">Largo</div>
+        <div class="msg bot">Para cabello largo, el tinte completo está desde $XX.000. ¿Quieres agendar una cita? Te muestro los horarios disponibles para esta semana.</div>
+        <div class="msg user">Sí, para el viernes en la tarde</div>
+        <div class="msg bot">El viernes tenemos disponible: 2:00pm, 3:30pm y 5:00pm. ¿Cuál te queda mejor?</div>
+        <div class="msg user">A las 3:30pm</div>
+        <div class="msg bot">¡Perfecto! Tu cita está confirmada para el <strong>viernes a las 3:30pm</strong>. Te envío un recordatorio el día anterior. ¡Hasta pronto!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILOT STEPS -->
+<section class="pilot" id="piloto">
+  <div class="container">
+    <div class="tag">El piloto</div>
+    <h2>Qué pasa exactamente<br><span class="highlight">en el mes gratis</span></h2>
+    <p class="subtitle">Sin sorpresas. Esto es lo que hacemos, paso a paso.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-badge">Día 1-2</div>
+          <h4>Conversación inicial</h4>
+          <p>Una llamada de 30 minutos donde me cuentas los servicios, precios, horarios y operarios. Eso es todo lo que necesito para configurar el asistente.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-badge">Día 3-7</div>
+          <h4>Configuración y pruebas</h4>
+          <p>Configuro el asistente con la información de tu peluquería. Hacemos pruebas internas para asegurar que responde correctamente antes de conectarlo.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-badge">Día 8</div>
+          <h4>Activación</h4>
+          <p>Conectamos el asistente a tu WhatsApp. Desde ese momento empieza a responder. Estaré disponible las primeras 48h para ajustes inmediatos.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-badge">Días 9-30</div>
+          <h4>El piloto en acción</h4>
+          <p>El asistente trabaja solo. Yo monitoreo que todo funcione. Tú ves en tiempo real cuántas citas agenda y cuánto tiempo te ahorra.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-badge">Día 30</div>
+          <h4>Resultados y decisión</h4>
+          <p>Te muestro el reporte: cuántas citas, tiempo ahorrado, satisfacción de clientes. En ese punto tú decides si seguimos — sin presión.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="container">
+    <div class="tag">Servicios que maneja</div>
+    <h2>El asistente conoce<br>todos tus servicios</h2>
+    <p class="subtitle">Responde preguntas y agenda citas para cada uno.</p>
+    <div class="services-grid">
+      <div class="service-chip"><span>✂️</span>Cortes</div>
+      <div class="service-chip"><span>💇</span>Peinados</div>
+      <div class="service-chip"><span>💄</span>Maquillaje</div>
+      <div class="service-chip"><span>💨</span>Cepillado</div>
+      <div class="service-chip"><span>🔥</span>Planchado</div>
+      <div class="service-chip"><span>🎨</span>Tintes</div>
+      <div class="service-chip"><span>✨</span>Mechas</div>
+      <div class="service-chip"><span>🌊</span>Balayage</div>
+      <div class="service-chip"><span>🔄</span>Corrección</div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule">
+  <div class="container">
+    <div class="tag">Horario de atención</div>
+    <div class="schedule-grid">
+      <div class="schedule-row">
+        <span class="schedule-day">Lunes a Viernes</span>
+        <span class="schedule-time">7:00 am – 7:00 pm</span>
+      </div>
+      <div class="schedule-row">
+        <span class="schedule-day">Sábado</span>
+        <span class="schedule-time">8:00 am – 7:00 pm</span>
+      </div>
+      <div class="schedule-row">
+        <span class="schedule-day">Domingo</span>
+        <span class="schedule-time">10:00 am – 5:00 pm</span>
+      </div>
+    </div>
+    <p style="font-size:0.82rem;color:var(--gray-light);margin-top:14px;">El asistente responde mensajes fuera de este horario e informa al cliente cuándo puede agendar.</p>
+  </div>
+</section>
+
+<!-- CTA FORM -->
+<section class="cta-section">
+  <div class="container">
+    <div class="tag">Empieza gratis</div>
+    <h2>¿Tu peluquería puede<br><span class="highlight">ahorrar 3 horas al día?</span></h2>
+    <p class="subtitle">Déjame mostrártelo. Sin costo, sin compromisos.</p>
+    <div class="form-card">
+      <form id="pilotForm">
+        <div class="form-group">
+          <label>Nombre del negocio</label>
+          <input type="text" id="business" placeholder="Ej. D'Arthur Peluquería" required>
+        </div>
+        <div class="form-group">
+          <label>Tu WhatsApp</label>
+          <input type="tel" id="phone" placeholder="Ej. 3001234567" required>
+        </div>
+        <div class="form-group">
+          <label>¿Cuántas citas manejas por semana?</label>
+          <select id="volume">
+            <option value="">Selecciona...</option>
+            <option value="menos-20">Menos de 20</option>
+            <option value="20-50">Entre 20 y 50</option>
+            <option value="50-100">Entre 50 y 100</option>
+            <option value="mas-100">Más de 100</option>
+          </select>
+        </div>
+        <button type="submit" class="form-submit">Quiero el piloto gratis →</button>
+        <p class="form-note">Te contacto por WhatsApp en menos de 24 horas.</p>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <h3>¡Listo!</h3>
+        <p>Recibí tu solicitud. Te escribo al WhatsApp que dejaste en menos de 24 horas para coordinar la llamada inicial.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>Fassilita · Automatizaciones para negocios locales · <a href="mailto:hola@fassilita.com">hola@fassilita.com</a></p>
+  </div>
+</footer>
+
+<script>
+  // Form submission
+  document.getElementById('pilotForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const business = document.getElementById('business').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const volume = document.getElementById('volume').value;
+
+    if (!business || !phone || !volume) return;
+
+    // === OPCIÓN A: Enviar a webhook n8n (reemplaza la URL cuando tengas el endpoint) ===
+    // fetch('https://n8n-n8n.muwwc8.easypanel.host/webhook/landing-pilot', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ business, phone, volume, timestamp: new Date().toISOString() })
+    // });
+
+    // === OPCIÓN B: Mailto (funciona sin backend) ===
+    // window.location.href = `mailto:hola@fassilita.com?subject=Piloto Gratis - ${encodeURIComponent(business)}&body=Negocio: ${encodeURIComponent(business)}%0AWhatsApp: ${encodeURIComponent(phone)}%0AVolumen: ${encodeURIComponent(volume)}`;
+
+    // Mostrar confirmación
+    document.getElementById('pilotForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
